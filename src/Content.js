@@ -8,25 +8,48 @@ import { useEffect,useState } from "react"
 //3. useEffect (callback,[deps])
 // - callback sẽ được gọi lại mỗi khi deps thay đổi
 
-//callback luon duojc goi sau khi component mounted
+//luon luon dung
+//1. callback luon duojc goi sau khi component mounted
+//2. Cleanup funtion luon duoc goi truoc khi component unmounted
+//3. Cleanup funtion luon duoc goi truoc khi callback duoc goi ( trừ lần mounted)
 
-// element cua button
+function Content(){ 
 
+    const [avatar, setAvatar] = useState()
 
-function Content(){
-    const [countdown, setCountdow] = useState(180)
-    console.log(countdown);
     useEffect(()=>{
-        const time = setInterval (()=>{
-                setCountdow(prevState => prevState - 1)
-            },1000)
-            
-            return()=>clearInterval(time)
-    },[])
 
+        return ()=>{
+            avatar && URL.revokeObjectURL(avatar.preview)
+        }
+    },[avatar])
+
+    const hanldePreviewAvatar=(e)=>{
+        const file = e.target.files[0]
+
+        file.preview = URL.createObjectURL(file)
+        
+        //set lai
+        setAvatar(file)
+    }
     return(
         <div>
-            <h1>{countdown}</h1>
+            <input 
+            type="file"
+            onChange={hanldePreviewAvatar}
+            />  
+            {avatar && (
+                <img 
+                    src={avatar.preview}
+
+                    alt=""
+                    style={{
+                        width:200,
+                        height:200,
+                        
+                    }}
+                />
+            )}
         </div>
     )
 }
