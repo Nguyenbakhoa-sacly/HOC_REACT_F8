@@ -13,43 +13,67 @@ import { useEffect,useState } from "react"
 //2. Cleanup funtion luon duoc goi truoc khi component unmounted
 //3. Cleanup funtion luon duoc goi truoc khi callback duoc goi ( trừ lần mounted)
 
+//dùng để list ra để chọn nội dung bài học
+const lessons=[
+    {
+        id:1,
+        name:'noi dung bai 1'
+    },
+    {
+        id:2,
+        name:'noi dung bai 2'
+    },
+    {
+        id:3,
+        name:'noi dung bai 3'
+    }
+]
 function Content(){ 
 
-    const [avatar, setAvatar] = useState()
+    const [lessonId, setLessonId] = useState(1)
 
     useEffect(()=>{
 
-        return ()=>{
-            avatar && URL.revokeObjectURL(avatar.preview)
+        //log ra comment của bài học
+        const hanldeComment = ({detail})=>{
+            console.log(detail);
         }
-    },[avatar])
 
-    const hanldePreviewAvatar=(e)=>{
-        const file = e.target.files[0]
+        //lây nội dùng fake comment từ file index.js
+        window.addEventListener(`lesson -${lessonId}`,hanldeComment)
 
-        file.preview = URL.createObjectURL(file)
-        
-        //set lai
-        setAvatar(file)
-    }
+        return ()=>{
+        //Đóng nội dùng fake comment từ file index.js
+        window.removeEventListener(`lesson -${lessonId}`,hanldeComment)
+
+        }
+    },[lessonId])
+    
     return(
         <div>
-            <input 
-            type="file"
-            onChange={hanldePreviewAvatar}
-            />  
-            {avatar && (
-                <img 
-                    src={avatar.preview}
-
-                    alt=""
-                    style={{
-                        width:200,
-                        height:200,
-                        
-                    }}
-                />
-            )}
+            <ul>
+                {
+                    //lay các bài học từ arr
+                lessons.map((lesson)=>(
+                    <li
+                        key={lesson.id} 
+                        style={
+                            {   
+                                /**nếu id của lessonid bằng lesson.id thi noi dung
+                                bai học mau do, con ko thì màu đen*/
+                                color:lessonId === lesson.id ?
+                                'red': '#333'
+                            }
+                        }
+                        /**click vao roi gan id lay duocj cho
+                        setLessonid treen leen cho lessonis*/
+                        onClick={()=> setLessonId(lesson.id)}
+                    >
+                        {lesson.name}
+                    </li>
+                ))
+                }
+            </ul>
         </div>
     )
 }
