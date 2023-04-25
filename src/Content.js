@@ -1,32 +1,35 @@
-import { useEffect,useState } from "react"
+import { useEffect,useState,useRef } from "react"
 
-//1. useEffect (callback)
-// - gọi callback mõi khi component re-render
-// - gọi callback sau khi componrnt them element vao DOM
-//2. useEffect (callback,[])
-// - Chỉ gọi callback 1 lần sau khi component mouunted
-//3. useEffect (callback,[deps])
-// - callback sẽ được gọi lại mỗi khi deps thay đổi
-
-//callback luon duojc goi sau khi component mounted
-
-// element cua button
-
-
+//useRef
+    /**
+     * 
+     * 
+     */
 function Content(){
-    const [countdown, setCountdow] = useState(180)
-    console.log(countdown);
-    useEffect(()=>{
-        const time = setInterval (()=>{
-                setCountdow(prevState => prevState - 1)
-            },1000)
-            
-            return()=>clearInterval(time)
-    },[])
+    const [count, setCount] = useState(60)
+    
+    const timeId = useRef()
+    const prevCount = useRef()
+
+    useEffect (()=>{
+        prevCount.current = count
+    },[count])
+    
+    const handleStart = ()=>{
+        timeId.current= setInterval(()=>{
+            setCount(prevCount => prevCount -1)
+        },1000)
+    }
+
+    const handleStop = () =>{
+        clearInterval(timeId.current)
+    }
 
     return(
-        <div>
-            <h1>{countdown}</h1>
+        <div style={{padding:20}}>
+            <h1>{count}</h1>
+            <button onClick={handleStart}>Start</button>
+            <button onClick={handleStop}>Stop</button>
         </div>
     )
 }
