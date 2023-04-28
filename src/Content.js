@@ -1,35 +1,19 @@
-import { useEffect,useState,useRef } from "react"
+import { useEffect,useState,useRef,memo, useCallback } from "react"
+import Content2 from './Content2'
+/**
+ * dung usecallback component cuar minh cos dung memo
+ */
 
-//useRef
-    /**
-     * 
-     * 
-     */
 function Content(){
-    const [count, setCount] = useState(60)
+    const [count, setCount] = useState(0)
     
-    const timeId = useRef()
-    const prevCount = useRef()
-
-    useEffect (()=>{
-        prevCount.current = count
-    },[count])
-    
-    const handleStart = ()=>{
-        timeId.current= setInterval(()=>{
-            setCount(prevCount => prevCount -1)
-        },1000)
-    }
-
-    const handleStop = () =>{
-        clearInterval(timeId.current)
-    }
-
+    const handleincrease = useCallback(()=>{
+        setCount(prevCount => prevCount + 1)
+    },[])
     return(
         <div style={{padding:20}}>
+            <Content2 onIncrease={handleincrease} />
             <h1>{count}</h1>
-            <button onClick={handleStart}>Start</button>
-            <button onClick={handleStop}>Stop</button>
         </div>
     )
 }
