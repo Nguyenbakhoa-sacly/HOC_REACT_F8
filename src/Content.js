@@ -1,19 +1,70 @@
-import { useEffect,useState,useRef,memo, useCallback } from "react"
-import Content2 from './Content2'
+import { useState,useMemo,useRef } from "react"
+// import Content2 from './Content2'
 /**
- * dung usecallback component cuar minh cos dung memo
+ *  useMeno dung để tránh thực hiện lại 1 đoạn logic ko cần thiết
  */
 
 function Content(){
-    const [count, setCount] = useState(0)
-    
-    const handleincrease = useCallback(()=>{
-        setCount(prevCount => prevCount + 1)
-    },[])
+
+    const [name,setName] = useState('')
+    const [price,setPrice] = useState('')
+    const [product,setProduct] =useState([])
+
+    const nameref = useRef()
+
+    const handleSubmit = () =>{
+        setProduct([...product,{
+            name,
+            price: +price
+        }])
+        
+        setName('')
+        setPrice('')
+        nameref.current.focus()
+    }
+
+    // tinh tong down hang
+    const total = useMemo(()=>{
+        const result= product.reduce((result,prod) =>{
+            console.log("Tính toán lại...")
+            return result + prod.price
+        },0)
+        return result
+    },[product])
+
+    // const total = product.reduce((result,prod)=>{
+    //     console.log("Tính toán lại...");
+    //     return result + prod.price
+    // },0)
+
     return(
         <div style={{padding:20}}>
-            <Content2 onIncrease={handleincrease} />
-            <h1>{count}</h1>
+            <input 
+                ref={nameref}
+                value={name}
+                placeholder="Enter name..."
+                onChange={e =>setName(e.target.value) }
+            />
+            <br />
+            <input 
+                value={price}
+                placeholder="Enter price..."
+                onChange={e => setPrice(e.target.value)}
+            />
+            <br />
+            <button onClick={handleSubmit}>
+                Add
+            </button>
+            <br />
+            Total:{total}
+            <ul>{ product.map((product,index)=>{
+                    return(
+                        <li key={index}>
+                            {product.name} -{product.price}
+                        </li>
+                    )})
+                }
+            </ul>
         </div>
     )
 }
