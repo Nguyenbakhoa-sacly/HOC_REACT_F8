@@ -1,14 +1,15 @@
 import Content from "./Content.js";
-import { useState } from "react";
+// import { useState } from "react";
 function App() {
 
-  const [show, setShow] = useState(false)
+  // const [show, setShow] = useState(false)
 
   return ( 
     <div className="App" style={{padding: 20}}>
 
-      <button onClick={()=> setShow(!show)}>Toggle</button>
-      {show && <Content />}
+      {/* <button onClick={()=> setShow(!show)}>Toggle</button>
+      {show && <Content />} */}
+      <Content />
     </div>
 
 
