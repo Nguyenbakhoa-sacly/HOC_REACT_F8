@@ -1,18 +1,11 @@
-import Content from "./Content.js";
-// import { useState } from "react";
-function App() {
+import Content from "./Todo/Content";
 
-  // const [show, setShow] = useState(false)
+function App() {
 
   return ( 
     <div className="App" style={{padding: 20}}>
-
-      {/* <button onClick={()=> setShow(!show)}>Toggle</button>
-      {show && <Content />} */}
       <Content />
     </div>
-
-
   );
 }
 
