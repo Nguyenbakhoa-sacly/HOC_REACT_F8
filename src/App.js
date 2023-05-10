@@ -1,36 +1,24 @@
-import{useStore, actions} from './store';
-import { useRef,useState } from 'react';
-function App() {
-  const [state,dispatch] = useStore()
-  const {todo,todoInput} = state
+import Video from './Component/Video';
+import { useImperativeHandle,useEffect, useRef } from 'react';
 
-  const handleAdd = ()=>{
-    dispatch(actions.addTodo(todoInput))
-    dispatch(actions.setTodoInput(''))
-    todoInputRef.current.focus()
+function App() {
+  const videoRef = useRef();
+  // useEffect(()=>{
+  //   console.log(videoRef);
+  // })
+  const handlePlay= ()=>{
+
+    videoRef.current.play1();
+  }
+  const handlePause= ()=>{
+    videoRef.current.pause1();
   }
 
-  const todoInputRef = useRef()
   return ( 
       <div>
-        <input 
-        ref={todoInputRef}
-          value={todoInput}
-          placeholder='Enter todo...'
-          onChange={e => {
-            dispatch(actions.setTodoInput( e.target.value))
-          }}
-        />
-        <button onClick={handleAdd}>ADD</button>
-          <ul>
-            {todo.map((todo, index) =>(
-              <li key={index}>{todo}
-              <span>
-                <button onClick={()=>dispatch(actions.deleteTodo(index))}>x</button>
-              </span>
-              </li>
-            ))}
-          </ul>
+          <Video  ref={videoRef}/>
+          <button onClick={handlePlay}> Play</button>
+          <button onClick={handlePause}>Pause</button>
       </div>
     );
 }
