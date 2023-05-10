@@ -1,24 +1,34 @@
-import Video from './Component/Video';
-import { useImperativeHandle,useEffect, useRef } from 'react';
+
+import { Routes, Route, Link } from "react-router-dom"
+
+import Home from "./pages/Home";
+import New from "./pages/New";
+import Contact from "./pages/Contact";
+
 
 function App() {
-  const videoRef = useRef();
-  // useEffect(()=>{
-  //   console.log(videoRef);
-  // })
-  const handlePlay= ()=>{
-
-    videoRef.current.play1();
-  }
-  const handlePause= ()=>{
-    videoRef.current.pause1();
-  }
 
   return ( 
-      <div>
-          <Video  ref={videoRef}/>
-          <button onClick={handlePlay}> Play</button>
-          <button onClick={handlePause}>Pause</button>
+      <div >
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/news">News</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+          </ul>
+        </nav>
+
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/news" element={<New />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
       </div>
     );
 }
